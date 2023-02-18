@@ -1,39 +1,43 @@
-S = input()
-T = input()
-isMatchFromFront = [None] * len(T)
-isMatchFromEnd = [None] * len(T)
+def match_or_not(a, b):
+    if a == "?" or b == "?" or a == b:
+        return True
+    else:
+        return False
 
+S = list(input())
+T = list(input())
+
+isMatchFromFront = [False] * (len(T)+1)
+isMatchFromEnd = [False] * (len(T)+1)
+
+# 前から0, 1, 2, ...番目まではマッチするか？（累積和のような感じ）
+isMatchFromFront[0] = True
 for i in range(len(T)):
-    if not(S[i] == "?" or T[i] == "?"):
-        isMatchFromFront[i] = False
+    if not match_or_not(S[i], T[i]):
+        break
     else:
-        isMatchFromFront[i] = True
+        isMatchFromFront[i+1] = True
 
-for i in reversed(range(len(T))):
-    if not(S[i] == "?" or T[i] == "?"):
-        isMatchFromEnd[i] = False
+
+
+# 後ろから0, 1, 2, ...番目まではマッチするか？（累積和のような感じ）
+# SやT自体を逆順にすることで、前から考えた時と同じコードで書けるようにしている
+S.reverse()
+T.reverse()
+
+isMatchFromEnd[0] = True
+for i in range(len(T)):
+    if not match_or_not(S[i], T[i]):
+        break
     else:
-        isMatchFromEnd[i] = True
+        isMatchFromEnd[i+1] = True
 
-print(isMatchFromFront)
-print(isMatchFromEnd)
-
+# 出力
 for x in range(len(T)+1):
-    ans = True
-    if isMatchFromFront[x]:
-        
-
-
-
-
-    for i in range(len(T)):
-        if Sx[i] == "?" or T[i] == "?":
-            pass
-        else:
-            if Sx[i] != T[i]:
-                ans = False
-        # print(Sx[i], T[i], ans)
-    if ans:
+    if isMatchFromFront[x] and isMatchFromEnd[len(T)-x]:
         print("Yes")
     else:
         print("No")
+        
+# print(isMatchFromFront)
+# print(isMatchFromEnd)
